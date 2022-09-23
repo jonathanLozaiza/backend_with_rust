@@ -21,7 +21,7 @@ impl Post {
 
     // Función para crear un nuevo Post en la BBDD a partir de datos de entrada
     pub fn create_post<'a> (
-        conn: PgConnection, 
+        conn: &mut PgConnection, 
         post: &NewPostHandler
     ) -> Result<Post, diesel::result::Error> {
 
@@ -32,8 +32,7 @@ impl Post {
             slug: &slug,
             body: &post.body
         };
-
-        diesel::insert_into(posts::table).values(new_post).get_result::<Post>(&mut conn)
+        diesel::insert_into(posts::table).values(new_post).get_result::<Post>(conn)
     }
 }
 
